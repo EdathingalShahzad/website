@@ -96,6 +96,15 @@
             width: 100%;
         }
         
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark);
+            z-index: 101;
+        }
+        
         /* Hero Section */
         .hero {
             position: relative;
@@ -310,9 +319,19 @@
         }
         
         /* Responsive Design */
+        @media (max-width: 992px) {
+            header, header.scrolled {
+                padding: 20px 50px;
+            }
+            
+            .hero, section {
+                padding: 100px 50px;
+            }
+        }
+        
         @media (max-width: 768px) {
             header, header.scrolled {
-                padding: 20px;
+                padding: 15px 20px;
             }
             
             .hero, section {
@@ -323,8 +342,56 @@
                 font-size: 3rem;
             }
             
+            /* Mobile Menu Styles */
+            .menu-toggle {
+                display: block;
+            }
+            
             nav {
-                gap: 20px;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background-color: rgba(108, 92, 231, 0.95);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transition: right 0.5s ease;
+                z-index: 100;
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav a {
+                color: white;
+                font-size: 1.2rem;
+            }
+            
+            header.scrolled nav a {
+                color: white;
+            }
+            
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
             }
         }
     </style>
@@ -332,12 +399,19 @@
 <body>
     <header id="header">
         <a href="#" class="logo">Flowy</a>
+        
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        
         <nav>
             <a href="#">Home</a>
             <a href="#features">Features</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </nav>
+        
+        <div class="overlay"></div>
     </header>
     
     <section class="hero">
@@ -459,6 +533,11 @@
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
+                    
+                    // Close mobile menu if open
+                    if (nav.classList.contains('active')) {
+                        toggleMenu();
+                    }
                 }
             });
         });
@@ -475,6 +554,31 @@
             circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
             circle.style.animationDuration = `${randomDuration}s`;
             circle.style.animationDelay = `${randomDelay}s`;
+        });
+        
+        // Mobile menu toggle functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+        const overlay = document.querySelector('.overlay');
+        
+        function toggleMenu() {
+            nav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            menuToggle.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        }
+        
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        // Close menu when clicking on a nav link
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            });
         });
     </script>
 </body>
