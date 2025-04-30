@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultra Glowing Website</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="background"></div>
+
+  <div class="glass-panel">
+    <h1 class="neon-text">WELCOME TO ULTRA</h1>
+    <p class="sub-text">Enter the Glowverse</p>
+    <a href="#main" class="glow-button">Enter</a>
+  </div>
+
+  <section id="main" class="content">
+    <h2 class="section-title">🔥 Ultra Stylish Section</h2>
+    <p class="description">Scroll to reveal content with glowing transitions.</p>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="script.js"></script>
+
+
+  <script>gsap.from(".glass-panel", {
+    duration: 1.5,
+    y: -100,
+    opacity: 0,
+    ease: "power3.out"
+  });
+  
+  gsap.from(".glow-button", {
+    duration: 1,
+    scale: 0.8,
+    opacity: 0,
+    delay: 1,
+    ease: "bounce.out"
+  });
+  
+  gsap.from(".section-title", {
+    scrollTrigger: {
+      trigger: ".section-title",
+      start: "top 80%",
+    },
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: "power2.out"
+  });
+  </script>
+</body>
+</html>
