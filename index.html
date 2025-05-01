@@ -1,585 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAHZAD</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Base Styles */
-        :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --accent: #fd79a8;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            overflow-x: hidden;
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Header Styles */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            transition: all 0.5s ease;
-            backdrop-filter: blur(10px);
-            background-color: rgba(245, 246, 250, 0.8);
-        }
-        
-        header.scrolled {
-            padding: 15px 100px;
-            background-color: rgba(108, 92, 231, 0.9);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        header.scrolled .logo,
-        header.scrolled nav a {
-            color: white;
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        nav {
-            display: flex;
-            gap: 40px;
-        }
-        
-        nav a {
-            position: relative;
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-        
-        nav a:hover::after {
-            width: 100%;
-        }
-        
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--dark);
-            z-index: 101;
-        }
-        
-        /* Hero Section */
-        .hero {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 100px;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: linear-gradient(to top, var(--light), transparent);
-            z-index: 10;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            text-align: center;
-        }
-        
-        .hero-content h1 {
-            font-size: 4.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 1s ease forwards;
-        }
-        
-        .hero-content p {
-            font-size: 1.2rem;
-            color: var(--dark);
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 1s ease 0.3s forwards;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 1s ease 0.6s forwards;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
-        }
-        
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
-        }
-        
-        /* Animated Background Elements */
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            opacity: 0.2;
-            animation: float 15s infinite ease-in-out;
-        }
-        
-        .circle:nth-child(1) {
-            width: 500px;
-            height: 500px;
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-        
-        .circle:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            bottom: -50px;
-            right: 100px;
-            animation-delay: 2s;
-        }
-        
-        .circle:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            top: 50%;
-            right: -50px;
-            animation-delay: 4s;
-        }
-        
-        /* Sections */
-        section {
-            padding: 100px;
-            position: relative;
-        }
-        
-        section h2 {
-            font-size: 3rem;
-            margin-bottom: 50px;
-            color: var(--primary);
-        }
-        
-        section p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-        
-        /* Features Grid */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .feature-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        
-        .feature-card.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 50px 100px;
-            text-align: center;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .social-links a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-40px) rotate(5deg);
-            }
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            header, header.scrolled {
-                padding: 20px 50px;
-            }
-            
-            .hero, section {
-                padding: 100px 50px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            header, header.scrolled {
-                padding: 15px 20px;
-            }
-            
-            .hero, section {
-                padding: 100px 20px;
-            }
-            
-            .hero-content h1 {
-                font-size: 3rem;
-            }
-            
-            /* Mobile Menu Styles */
-            .menu-toggle {
-                display: block;
-            }
-            
-            nav {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 300px;
-                height: 100vh;
-                background-color: rgba(108, 92, 231, 0.95);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 30px;
-                transition: right 0.5s ease;
-                z-index: 100;
-            }
-            
-            nav.active {
-                right: 0;
-            }
-            
-            nav a {
-                color: white;
-                font-size: 1.2rem;
-            }
-            
-            header.scrolled nav a {
-                color: white;
-            }
-            
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 99;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-            }
-            
-            .overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Package Form with Advanced Features</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    header { 
+      padding: 15px 20px; 
+      display: flex; 
+      justify-content: space-between;
+      align-items: center; 
+      background-color: #000000; 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      z-index: 10; 
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); 
+    }
+  
+    header img { 
+      height: 40px; 
+      width: auto; 
+    }
+    
+    nav { 
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+    
+    nav a { 
+      color: #fff; 
+      text-decoration: none; 
+      font-weight: 600; 
+      font-size: 0.9rem; 
+      padding: 5px 0; 
+      transition: color 0.3s ease;
+    }
+    
+    nav a:hover { 
+      color: #FFDB58; 
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+    }
+    
+    .hamburger div {
+      width: 100%;
+      height: 3px;
+      background-color: white;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+    
+    .order-counter {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      background: #4f46e5;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 5;
+    }
+    
+    body {
+      padding-top: 80px;
+      background: #603b61;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+      min-height: 100vh;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+      
+      nav {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #000;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        gap: 15px;
+        clip-path: circle(0px at 90% -10%);
+        -webkit-clip-path: circle(0px at 90% -10%);
+        transition: all 0.5s ease-out;
+        pointer-events: none;
+      }
+      
+      nav.active {
+        clip-path: circle(1000px at 90% -10%);
+        -webkit-clip-path: circle(1000px at 90% -10%);
+        pointer-events: all;
+      }
+      
+      nav a {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease 0.2s;
+      }
+      
+      nav.active a {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      .hamburger.active div:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      
+      .hamburger.active div:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .hamburger.active div:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+      
+      .order-counter {
+        top: 80px;
+        right: 10px;
+        font-size: 0.9rem;
+        padding: 5px 10px;
+      }
+    }
+
+    .form-card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      margin-top: 100px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #603b61;
+      font-size: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 15px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #4f46e5;
+      outline: none;
+    }
+
+    .btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #3730a3;
+    }
+
+    #resultList {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .result-item {
+      background: #e6f7ff;
+      border-left: 5px solid #00b894;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #1a202c;
+      position: relative;
+    }
+
+    .checkbox-label {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, #ff00b7, #ffffff);
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+
+    .checkbox-label:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, #3B82F6, #9333EA);
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      transform: scale(1.5);
+      cursor: pointer;
+      accent-color: rgb(9, 255, 0);
+      transition: all 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1.5); }
+      50% { transform: scale(2); }
+      100% { transform: scale(1.5); }
+    }
+
+    .checkbox-label input[type="checkbox"]:checked {
+      animation: pop 0.4s ease forwards;
+    }
+
+    .result-content {
+      padding-right: 40px;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button-container .btn {
+      margin-top: 0;
+    }
+
+    .bakhoor-logo {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .has-logo .result-content {
+      padding-left: 70px;
+    }
+
+    .search-container {
+      margin: 20px 0;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #4f46e5;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .whatsapp-btn {
+      background-color: #25D366;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #128C7E;
+    }
+
+    .total-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4f46e5;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 5;
+    }
+
+    .delete-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .delete-btn:hover {
+      background-color: #ff3f5d;
+    }
+
+    @media (max-width: 768px) {
+      .total-container {
+        bottom: 10px;
+        right: 10px;
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 40px 20px;
+      }
+      
+      .form-card {
+        padding: 30px 40px;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+      }
+      
+      .checkbox-label {
+        width: 40px;
+        height: 40px;
+        top: 20px;
+        right: 20px;
+      }
+      
+      .checkbox-label input[type="checkbox"] {
+        transform: scale(2);
+      }
+      
+      @keyframes pop {
+        0% { transform: scale(2); }
+        50% { transform: scale(2.5); }
+        100% { transform: scale(2); }
+      }
+
+      .bakhoor-logo {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-card {
+        padding: 15px;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      input, select, .btn {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      
+      .result-item {
+        padding: 12px;
+        font-size: 14px;
+      }
+      
+      .checkbox-label {
+        width: 25px;
+        height: 25px;
+        top: 10px;
+        right: 10px;
+      }
+      
+      .checkbox-label input[type="checkbox"] {
+        transform: scale(1.2);
+      }
+      
+      .button-container {
+        flex-direction: column;
+      }
+
+      .bakhoor-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .has-logo .result-content {
+        padding-left: 60px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header id="header">
-        <a href="#" class="logo">SHAHZAD</a>
-        
-        <div class="menu-toggle">
-            <i class="fas fa-bars"></i>
-        </div>
-        
-        <nav>
-            <a href="#">Home</a>
-            <a href="#features">Features</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
-        
-        <div class="overlay"></div>
-    </header>
+  <header>
+    <a href="home.html" class="logo">
+      <img src="./logo_white_text.png" alt="Logo" style="height: 55px;">
+    </a>
     
-    <section class="hero">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        
-        <div class="hero-content">
-            <h1>Shahzad Designs</h1>
-            <p>Experience the elegance of motion with our carefully crafted animations that bring your content to life in the most delightful way.</p>
-            <a href="#" class="btn">Explore More</a>
-        </div>
-        
-        <!-- Animated wave divider -->
-        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="position: absolute; bottom: 0; left: 0; width: 100%;">
-            <path fill="#ffffff" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
-    </section>
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
     
-    <section id="features">
-        <h2>Amazing Features</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam similique officia doloribus, esse iure.</p>
-        
-        <div class="features">
-            <div class="feature-card">
-                <i class="fas fa-magic"></i>
-                <h3>Smooth Animations</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea nemo numquam quam! Nihil, eveniet qui? Obcaecati.</p>
-            </div>
-            
-            <div class="feature-card">
-                <i class="fas fa-paint-brush"></i>
-                <h3>Custom Styles</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero aliquid sed assumenda laudantium.</p>
-            </div>
-            
-            <div class="feature-card">
-                <i class="fas fa-mobile-alt"></i>
-                <h3>Responsive by Shahzad</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero aliquid sed assumenda laudantium.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section id="about" style="background-color: #f9f9f9;">
-        <h2>About Us</h2>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae explicabo ipsam voluptate nisi. Aliquam iste iusto eius dicta magni? Eum temporibus neque atque ipsam repellendus quidem repellat soluta tempora fuga.</p>
-        <p>Animation is at the heart of what we do. We believe that subtle motion can transform a good user experience into an exceptional one.</p>
-    </section>
-    
-    <section id="contact">
-        <h2>Get In Touch</h2>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum ut, nihil, suscipit.</p>
-        
-        <form style="max-width: 600px; margin: 50px auto;">
-            <div style="margin-bottom: 20px;">
-                <input type="text" placeholder="Your Name" style="width: 100%; padding: 15px; border: none; border-radius: 50px; background-color: #f0f0f0; font-size: 1rem;">
-            </div>
-            <div style="margin-bottom: 20px;">
-                <input type="email" placeholder="Your Email" style="width: 100%; padding: 15px; border: none; border-radius: 50px; background-color: #f0f0f0; font-size: 1rem;">
-            </div>
-            <div style="margin-bottom: 20px;">
-                <textarea placeholder="Your Message" rows="5" style="width: 100%; padding: 15px; border: none; border-radius: 20px; background-color: #f0f0f0; font-size: 1rem;"></textarea>
-            </div>
-            <button type="submit" class="btn" style="border: none; cursor: pointer;">Send Message</button>
-        </form>
-    </section>
-    
-    <footer>
-        <div class="logo" style="color: white;">Shahzad</div>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
-        </div>
-        <p>&copy; 2025 Shahzad Designs. All rights reserved.</p>
-    </footer>
-    
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Animate features on scroll
-        const featureCards = document.querySelectorAll('.feature-card');
-        
-        const animateOnScroll = () => {
-            featureCards.forEach(card => {
-                const cardPosition = card.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
-                
-                if (cardPosition < screenPosition) {
-                    card.classList.add('show');
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', animateOnScroll);
-        window.addEventListener('load', animateOnScroll);
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if (nav.classList.contains('active')) {
-                        toggleMenu();
-                    }
-                }
-            });
-        });
-        
-        // Floating circles animation
-        const circles = document.querySelectorAll('.circle');
-        circles.forEach((circle, index) => {
-            // Randomize initial positions and animations slightly
-            const randomX = Math.random() * 50 - 25;
-            const randomY = Math.random() * 50 - 25;
-            const randomDelay = Math.random() * 5;
-            const randomDuration = 10 + Math.random() * 10;
-            
-            circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            circle.style.animationDuration = `${randomDuration}s`;
-            circle.style.animationDelay = `${randomDelay}s`;
-        });
-        
-        // Mobile menu toggle functionality
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('nav');
-        const overlay = document.querySelector('.overlay');
-        
-        function toggleMenu() {
-            nav.classList.toggle('active');
-            overlay.classList.toggle('active');
-            menuToggle.innerHTML = nav.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    <nav id="navbar">
+      <a href="home.html">Home</a>
+      <a href="sorter.html">A-Sorter</a>
+      <a href="d-list.html">Delivery-list</a>
+      <a href="order_package.html">Order Packages</a>
+      <a href="#contact">Contact</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+  </header>
+  
+  <div class="order-counter" id="orderCounter">
+    Orders: 0
+  </div>
+
+  <div class="form-card">
+    <h2>PACKAGE ORDER FORM</h2>
+    <form id="packageForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required placeholder="Enter your name">
+
+      <label for="mobile">Mobile Number:</label>
+      <input type="tel" id="mobile" required pattern="[0-9]{10}" placeholder="10-digit mobile number">
+
+      <label for="packageSelect">Select Package:</label>
+      <select id="packageSelect" required>
+        <option value="">-- Select Package --</option>
+        <option value="" style="font-weight: bolder; color:#000000 ; text-align: center; font-size: 20px;" >SOAP & HANDWASH</option>
+        <option>2 Pcs Package Soap+Handwash           100₹</option>
+        <option>2 pcs Soap Package                          100₹</option>
+        <option>6 pcs Soap Package          Per Pcs: 70₹</option>
+        <option>12 pcs Soap Package         Per Pcs: 65₹</option>
+        <option>36 pcs (Half Carton)        Per Pcs: 57₹</option>
+        <option>72 pcs (Full Carton)        Per Pcs: 53₹</option>
+        <option value="" style="font-weight: bolder; color:#000000 ; text-align: center; font-size: 20px;" >ATHAR</option>
+        <option> 8ml Pcs Athar Package                      180₹</option>
+        <option>6 Pcs 8ml Athar              Per Pcs: 140₹</option>
+        <option>12 Pcs 8ml Athar             Per Pcs: 120₹</option>
+        <option>12ml Athar Package                    280₹</option>
+        <option>6 Pcs 12ml Athar             Per Pcs: 210₹</option>
+        <option>12 Pcs 12ml Athar            Per Pcs: 180₹</option>
+        <option value="" style="font-weight: bolder; color:#000000 ; text-align: center; font-size: 20px;" >BAKHOOR KIT</option>
+        <option>1Pcs  Bakhoor Kit                           600₹</option>
+        <option>3 Pcs Bakhoor Kit (WL)                        440₹</option>
+        <option>6 Pcs Bakhoor Kit (DP)                       380₹</option>
+        <option>12 Pcs Bakhoor Kit (DP)         Per Pcs: 320₹</option>
+        <option value="" style="font-weight: bolder; color:#000000 ; text-align: center; font-size: 20px;" >CHARCOAL</option>
+        <option>1 Pcs Charcoal                              100₹</option>
+        <option>6 Pcs Charcoal (WL)            Per Pcs: 50₹</option>
+        <option>12 Pcs Charcoal (DP)            Per Pcs: 40₹</option>
+        <option value="" style="font-weight: bolder; color:#000000 ; text-align: center; font-size: 20px;" >BAKHOOR CHILLY</option>
+        <option>1Pcs Bakhoor Chilly Bottle 50g                  299₹</option>
+        <option>3 Pcs Chilly Bottle (WL)      Per Pcs: 250₹</option>
+        <option>6 Pcs Chilly Bottle (DP)       Per Pcs: 225₹</option>
+        <option>12 Pcs Chilly Bottle (DP)      Per Pcs: 180₹</option>
+      </select>
+
+      <div class="button-container">
+        <button type="submit" class="btn">Submit</button>
+        <button id="calculateTotalBtn" class="btn" style="background-color: #9333EA; width: auto;">Calculate Total</button>
+        <button id="deleteAllBtn" class="btn" style="background-color: red; width: auto;">Delete All</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search by name or phone number...">
+  </div>
+
+  <div id="resultList"></div>
+
+  <div class="total-container" id="totalContainer" style="display: none;">
+    Total: ₹<span id="totalAmount">0</span>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const navbar = document.getElementById('navbar');
+      const hamburger = document.querySelector('.hamburger');
+      navbar.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    document.querySelectorAll('#navbar a').forEach(link => {
+      link.addEventListener('click', () => {
+        const navbar = document.getElementById('navbar');
+        const hamburger = document.querySelector('.hamburger');
+        if (navbar.classList.contains('active')) {
+          navbar.classList.remove('active');
+          hamburger.classList.remove('active');
         }
-        
-        menuToggle.addEventListener('click', toggleMenu);
-        overlay.addEventListener('click', toggleMenu);
-        
-        // Close menu when clicking on a nav link
-        const navLinks = document.querySelectorAll('nav a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    toggleMenu();
-                }
-            });
+      });
+    });
+
+    const form = document.getElementById("packageForm");
+    const select = document.getElementById("packageSelect");
+    const resultList = document.getElementById("resultList");
+    const deleteAllBtn = document.getElementById("deleteAllBtn");
+    const orderCounter = document.getElementById("orderCounter");
+
+    window.onload = function() {
+      loadSavedResults();
+      updateOrderCounter();
+    };
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+      const selected = select.value.trim();
+
+      if (!selected || !name || !mobile) return;
+
+      const priceMatch = selected.match(/(Per Pcs:\s*\d+₹|\d+₹)$/);
+      const priceText = priceMatch ? priceMatch[0].trim() : null;
+      const unitPrice = priceText ? parseInt(priceText.replace(/\D/g, '')) : 0;
+      const isPerPcs = priceText?.toLowerCase().includes("per pcs");
+
+      const qtyMatch = selected.match(/(\d+)\s*Pcs/i);
+      const quantity = qtyMatch ? parseInt(qtyMatch[1]) : (isPerPcs ? 1 : null);
+      const total = (unitPrice*quantity);
+
+      const packageName = selected.replace(priceText || "", "").replace(/-+/g, "").trim();
+
+      const result = {
+        name,
+        mobile,
+        packageName,
+        unitPrice,
+        quantity,
+        total,
+        isBakhoor: selected.includes("Bakhoor Kit")
+      };
+
+      saveToLocalStorage(result);
+      displayResult(result);
+      form.reset();
+    });
+
+    function saveToLocalStorage(result) {
+      const savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+      savedResults.push(result);
+      localStorage.setItem('savedResults', JSON.stringify(savedResults));
+      updateOrderCounter();
+    }
+
+    function loadSavedResults() {
+      const savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+      savedResults.forEach(result => displayResult(result));
+    }
+
+    function updateOrderCounter() {
+      const savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+      orderCounter.textContent = `Orders: ${savedResults.length}`;
+      orderCounter.style.transform = 'scale(1.1)';
+      setTimeout(() => {
+        orderCounter.style.transform = 'scale(1)';
+      }, 300);
+    }
+
+    function displayResult(result) {
+      const resultItem = document.createElement("div");
+      resultItem.classList.add("result-item");
+      
+      if (result.isBakhoor) {
+        resultItem.classList.add("has-logo");
+      }
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.classList.add("delete-btn");
+      deleteBtn.innerHTML = "Delete";
+      deleteBtn.onclick = () => deleteResult(resultItem, result);
+
+      const whatsappBtn = document.createElement("button");
+      whatsappBtn.classList.add("whatsapp-btn");
+      whatsappBtn.innerHTML = "Share";
+      whatsappBtn.onclick = () => shareViaWhatsApp(result);
+
+      const buttonContainer = document.createElement("div");
+      buttonContainer.style.position = "absolute";
+      buttonContainer.style.bottom = "10px";
+      buttonContainer.style.right = "10px";
+      buttonContainer.style.display = "flex";
+      buttonContainer.style.gap = "5px";
+      buttonContainer.appendChild(deleteBtn);
+      buttonContainer.appendChild(whatsappBtn);
+
+      const checkboxLabel = document.createElement("label");
+      checkboxLabel.className = "checkbox-label";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+
+      checkbox.addEventListener("change", function () {
+        if (!checkbox.checked) {
+          const confirmUncheck = confirm("Do you want to uncheck this item?");
+          if (!confirmUncheck) {
+            checkbox.checked = true;
+          }
+        }
+      });
+
+      checkboxLabel.appendChild(checkbox);
+      resultItem.appendChild(checkboxLabel);
+
+      if (result.isBakhoor) {
+        const logo = document.createElement("img");
+        logo.src = "https://lh3.googleusercontent.com/HlKDmUVv5RJX_jSGnSHxCets96sacATM33Lsp_UGOnd8FA8y_0Cy6xzs08OjffdFZzFHtWB1Y_0vj6Zs4w=s265-w265-h265";
+        logo.alt = "Bakhoor Kit Logo";
+        logo.classList.add("bakhoor-logo");
+        resultItem.appendChild(logo);
+      }
+
+      const content = document.createElement("div");
+      content.className = "result-content";
+      content.innerHTML = `
+        <strong>Name:</strong> ${result.name}<br>
+        <strong>Mobile:</strong> ${result.mobile}<br>
+        <strong>Product:</strong> ${result.packageName}<br>
+        ${result.unitPrice ? `<strong>Unit Price:</strong> ${result.unitPrice}₹<br><strong>Quantity:</strong> ${result.quantity}<br>` : ''}
+        <strong>Total Price:</strong> ${result.total}₹
+      `;
+
+      resultItem.appendChild(content);
+      resultItem.appendChild(buttonContainer);
+      resultList.appendChild(resultItem);
+    }
+
+    function deleteResult(resultItem, result) {
+      if (confirm("Are you sure you want to delete this item?")) {
+        const savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+        const updatedResults = savedResults.filter(r => 
+          !(r.name === result.name && 
+            r.mobile === result.mobile && 
+            r.packageName === result.packageName && 
+            r.total === result.total)
+        );
+        localStorage.setItem('savedResults', JSON.stringify(updatedResults));
+        resultItem.remove();
+        updateOrderCounter();
+      }
+    }
+
+    deleteAllBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const confirmDelete = confirm("Are you sure you want to delete all saved results?");
+      if (confirmDelete) {
+        localStorage.removeItem('savedResults');
+        resultList.innerHTML = '';
+        updateOrderCounter();
+      }
+    });
+
+    document.getElementById('calculateTotalBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const savedResults = JSON.parse(localStorage.getItem('savedResults')) || [];
+      const total = savedResults.reduce((sum, result) => sum + (result.total || 0), 0);
+      document.getElementById('totalAmount').textContent = total;
+      document.getElementById('totalContainer').style.display = 'block';
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const items = document.getElementsByClassName('result-item');
+      
+      Array.from(items).forEach(item => {
+        const content = item.querySelector('.result-content').textContent.toLowerCase();
+        if (content.includes(searchTerm)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+
+    function shareViaWhatsApp(result) {
+      const message = `Order Details:\nName: ${result.name}\nMobile: ${result.mobile}\nProduct: ${result.packageName}\nTotal: ₹${result.total}`;
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+      function shareViaWhatsApp(result) {
+  const resultItem = Array.from(document.getElementsByClassName('result-item')).find(item =>
+    item.textContent.includes(result.name) &&
+    item.textContent.includes(result.mobile)
+  );
+
+  if (!resultItem) {
+    alert("Unable to find the order to share.");
+    return;
+  }
+
+  html2canvas(resultItem, {
+    scale: 2, // high-resolution image
+    useCORS: true
+  }).then(canvas => {
+    canvas.toBlob(blob => {
+      const file = new File([blob], "order-details.png", { type: "image/png" });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          title: 'Order Details',
+          text: `Order for ${result.name}`,
+          files: [file]
+        }).catch(err => {
+          console.error("Sharing failed:", err);
         });
-    </script>
+      } else {
+        alert("Your browser doesn't support sharing images via WhatsApp. Try using a mobile device.");
+      }
+    }, 'image/png');
+  });
+}
+
+    }
+
+    document.addEventListener('click', function(e) {
+      const totalContainer = document.getElementById('totalContainer');
+      if (!e.target.closest('#calculateTotalBtn') && !e.target.closest('#totalContainer')) {
+        totalContainer.style.display = 'none';
+      }
+    });
+
+    function logout(e) {
+      e.preventDefault();
+      if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "index.html";
+      }
+    }
+  </script>
 </body>
 </html>
